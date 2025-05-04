@@ -3,7 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-
+using MediatR;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,20 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<LibraryManagement.Api.Services.JwtTokenService>();
+
+// Add Repositories
+builder.Services.AddScoped<LibraryManagement.Domain.Interfaces.IUserRepository, LibraryManagement.Infrastructure.Repositories.UserRepository>();
+builder.Services.AddScoped<LibraryManagement.Domain.Interfaces.IBookRepository, LibraryManagement.Infrastructure.Repositories.BookRepository>();
+builder.Services.AddScoped<LibraryManagement.Domain.Interfaces.ILendingRepository, LibraryManagement.Infrastructure.Repositories.LendingRepository>();
+builder.Services.AddScoped<LibraryManagement.Domain.Interfaces.IReservationRepository, LibraryManagement.Infrastructure.Repositories.ReservationRepository>();
+builder.Services.AddScoped<LibraryManagement.Domain.Interfaces.ICategoryRepository, LibraryManagement.Infrastructure.Repositories.CategoryRepository>();
+builder.Services.AddScoped<LibraryManagement.Domain.Interfaces.ITagRepository, LibraryManagement.Infrastructure.Repositories.TagRepository>();
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(LibraryManagement.Application.Mapping.UserProfile).Assembly);
+
+// Add MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LibraryManagement.Application.Features.Users.Commands.CreateUserCommand).Assembly));
 
 var app = builder.Build();
 

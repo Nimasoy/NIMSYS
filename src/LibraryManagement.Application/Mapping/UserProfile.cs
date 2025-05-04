@@ -1,6 +1,7 @@
 using AutoMapper;
 using LibraryManagement.Application.DTOs;
 using LibraryManagement.Domain.Entities;
+using LibraryManagement.Application.Features.Users.Commands;
 
 namespace LibraryManagement.Application.Mapping
 {
@@ -12,6 +13,8 @@ namespace LibraryManagement.Application.Mapping
             CreateMap<CreateUserDto, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
             CreateMap<UpdateUserDto, User>();
+            CreateMap<CreateUserCommand, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
         }
     }
 } 

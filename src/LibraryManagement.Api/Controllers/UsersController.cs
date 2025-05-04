@@ -35,7 +35,6 @@ namespace LibraryManagement.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
             var id = await _mediator.Send(command);
